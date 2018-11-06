@@ -19,7 +19,7 @@
 We suggest to use /opt/attini as default path installation.
 This is the 101 recipe to a clean installation on RPi3/Raspbian:
 ```
-sudo apt-get install git python3-pip -y
+sudo apt-get install git python3-pip python3-dev -y
 cd ~/
 git clone https://github.com/rodriguesprobr/attini_server.git
 sudo mkdir -p /opt/attini
