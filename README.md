@@ -1,7 +1,7 @@
 # Attini Environment
 
 [Server (Linux x64 - Python 3.5+ - MySQL/MariaDB)](https://github.com/rodriguesprobr/attini_server "Attini Server x64")
-[Server (Linux arm - Python 3.5+)](https://github.com/rodriguesprobr/attini_client_rpi3 "Attini Client - RPi 3")
+[Client RPi3 (Linux arm - Python 3.5+)](https://github.com/rodriguesprobr/attini_client_rpi3 "Attini Client - RPi 3")
 
 ## Server to GNU/Linux
 
