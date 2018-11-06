@@ -30,4 +30,6 @@ sudo -H pip3 install /opt/attini/server
 Also, you may be able to schedule the server at the boot using cron capabilites, as mentioned above:
 ```
 @reboot /usr/bin/python3 /opt/attini/server/attini.py start
+# To rebuild timelapse videos every 1 hour, run: 
+* */1 * * * /usr/bin/python3 /opt/attini/server/attini.py timelapse
 ```
