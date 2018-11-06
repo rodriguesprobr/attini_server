@@ -67,14 +67,19 @@ if __name__ == '__main__':
     if action == "start":
         while True:
             try:
-                httpd = http.server.HTTPServer(\
-                    (util.get_config("server_ip"), util.get_config("server_port")\
+                util.log("Starting Attini server at {0}:{1}".format(util.get_config("server_ip"), util.get_config("server_port")), "attini.py", "debug")
+                httpd = http.server.HTTPServer((\
+                    util.get_config("server_ip"),\
+                    util.get_config("server_port")\
                 ), httpHandler)
+                util.log("Serving forever at {0}:{1}".format(util.get_config("server_ip"), util.get_config("server_port")), "attini.py", "debug")
                 httpd.serve_forever()
             except KeyboardInterrupt:
+                util.log("Closing service at {0}:{1}".format(util.get_config("server_ip"), util.get_config("server_port")), "attini.py", "debug")
                 httpd.server_close()
                 sys.exit()
             except Exception as e:
+                util.log("Closing service at {0}:{1}".format(util.get_config("server_ip"), util.get_config("server_port")), "attini.py", "debug")
                 httpd.server_close()
                 util.log("Waiting ~10 seconds to restart.", "attini.py")
                 util.sleep(5,15)
