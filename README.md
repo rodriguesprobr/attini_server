@@ -1,16 +1,33 @@
-       _   _   _       _                                
-  __ _| |_| |_(_)_ __ (_)  ___  ___ _ ____   _____ _ __ 
- / _` | __| __| | '_ \| | / __|/ _ \ '__\ \ / / _ \ '__|
-| (_| | |_| |_| | | | | | \__ \  __/ |   \ V /  __/ |   
- \__,_|\__|\__|_|_| |_|_| |___/\___|_|    \_/ \___|_|   
-                                                        
-by Fernando de Assis Rodrigues 
-fernando at rodrigues dot pro dot br
+# Attini Environment
 
-More info at http://dadosabertos.info/projects/attini/?lang=en_EN
+## Server to GNU/Linux
+
+**Author:** Fernando de Assis Rodrigues 
+**Contact:** fernando at rodrigues dot pro dot br
+**Project from:** [dadosabertos.info](http://dadosabertos.info/projects/attini)
+
+## Clean installation
+
+### Requirements
++ MariaDB or MySQL Server 5+
++ Updated GNU/Linux distro with a seeting network connection and MariaDB/SSH access
++ Python 3.5+
++ Git client
+
+### Clean installation Recipe
 
 We suggest to use /opt/attini as default path installation.
-Also, you may be able to schedule on cron the server starts and timelapse builder as mentioned above:
-
-@reboot /usr/bin/python3 /opt/attini/server/attini.py start 
-* */2 * * * /usr/bin/python3 /opt/attini/server/attini.py timelapse
+This is the 101 recipe to a clean installation on RPi3/Raspbian:
+```
+sudo apt-get install git python3-pip -y
+cd ~/
+git clone https://github.com/rodriguesprobr/attini_server.git
+sudo mkdir -p /opt/attini
+sudo chown user:user /opt/attini 
+mv attini_server /opt/attini/server
+sudo -H pip3 install /opt/attini/server
+```
+Also, you may be able to schedule the server at the boot using cron capabilites, as mentioned above:
+```
+@reboot /usr/bin/python3 /opt/attini/server/attini.py start
+```
