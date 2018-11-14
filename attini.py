@@ -27,7 +27,7 @@ class httpHandler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             client_ip = self.client_address[0]
-            util.log("GET from IP {0}".format(str(client_ip)), "attini.py")
+            util.log("POST from IP {0}".format(str(client_ip)), "attini.py")
             self._set_headers()
             form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={'REQUEST_METHOD':'POST', 'CONTENT_TYPE':self.headers['Content-Type'],})
         
