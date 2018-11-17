@@ -9,6 +9,7 @@ import base64
 import cgi
 import http.server
 import os
+import simplejson
 import subprocess
 import sys
 
@@ -28,38 +29,78 @@ class httpHandler(http.server.BaseHTTPRequestHandler):
         try:
             client_ip = self.client_address[0]
             util.log("POST from IP {0}".format(str(client_ip)), "attini.py")
-            self._set_headers()
-            form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={'REQUEST_METHOD':'POST', 'CONTENT_TYPE':self.headers['Content-Type'],})
-        
-            epoch = util.get_epoch()
-            rpiid = str(form['rpiid'].value)
-            air_humidity = str(form['air_humidity'].value)
-            air_temperature = str(form['air_temperature'].value)
-            soil_moisture = str(form['soil_moisture'].value)
-            util.log("rpiid: {0} | Air Humidity {1} | Air Temperature {2} | Soil Moisture {3}".format(\
-                str(rpiid),\
-                str(air_humidity),\
-                str(air_temperature),\
-                str(soil_moisture)\
-            ), "attini.py")
-            inserts = []
-            inserts.append([epoch, rpiid, "air_humidity", air_humidity, client_ip])
-            inserts.append([epoch, rpiid, "air_temperature", air_temperature, client_ip])
-            inserts.append([epoch, rpiid, "soil_moisture", soil_moisture, client_ip])
-            read.insert(inserts)
-            read.execute()
-        except:
-            util.log("Error processing POST.", "attini.py")
-            self.wfile.write(bytes(str("-1"), "utf8"))
 
-        try:
-            photo_bin = base64.b64decode(form['photo_bin'].value.decode('utf8'))
-            photo.execute(epoch, rpiid, photo_bin, client_ip)
-            util.log("Processed POST image.", "attini.py")
-            self.wfile.write(bytes(str("0"), "utf8"))
-        except:
-            util.log("Error processing POST image.", "attini.py")
-            self.wfile.write(bytes(str("-2"), "utf8"))
+            self._set_headers()
+
+            util.log("- Host: {0}".format(str(self.headers['Host'])), "attini.py")
+            util.log("- User-Agent: {0}".format(str(self.headers['User-Agent'])), "attini.py")
+            util.log("- Connection: {0}".format(str(self.headers['Connection'])), "attini.py")
+            util.log("- Content-Type: {0}".format(str(self.headers['Content-Type'])), "attini.py")
+            util.log("- Content-Length: {0}".format(str(self.headers['Content-Length'])), "attini.py")
+            
+            self.data_string = self.rfile.read(int(self.headers['Content-Length']))
+            util.log("- Data: {0}".format(str(self.data_string)), "attini.py")
+            
+            self.send_response(200)
+            self.end_headers()
+            
+            data = simplejson.loads(self.data_string.decode('utf8'))
+            util.log("- JSON Data: {0}".format(str(data)), "attini.py")
+            
+            util.log("Processing JSON...", "attini.py")
+            if 'id' in data:
+                json_return = "{\"code\": \"0\", \"message\":\"Sent data was stored on server.\"}\r\n";
+                
+                read_inserts = []
+                
+                id = data['id']            
+                util.log("ID: {0}".format(id), "attini.py")
+                
+                epoch = util.get_epoch()
+                util.log("Epoch time: {0}".format(epoch), "attini.py")
+                
+                if 'photo_bin' in data:
+                    if str(data['photo_bin']) != '0':
+                        photo.execute(epoch, id, base64.b64decode(data['photo_bin'].encode('utf8')), client_ip)
+                    else:
+                        json_return = "{\"code\": \"-7\", \"message\":\"Photo datum was not found on dataset sent.\" }\r\n";
+                        self.wfile.write(bytes(str(json_return), "utf8"))
+                else:
+                    json_return = "{\"code\": \"-6\", \"message\":\"Photo datum was not found on dataset sent.\" }\r\n";
+                    self.wfile.write(bytes(str(json_return), "utf8"))
+                
+                if 'air_humidity' in data:
+                    read_inserts.append([epoch, id, "air_humidity", str(data['air_humidity']), client_ip])
+                else:
+                    json_return = "{\"code\": \"-5\", \"message\":\"Air humidity datum was not found on dataset sent.\" }\r\n";
+                    self.wfile.write(bytes(str(json_return), "utf8"))
+                    
+                if 'air_temperature' in data:
+                    read_inserts.append([epoch, id, "air_temperature", str(data['air_temperature']), client_ip])
+                else:
+                    json_return = "{\"code\": \"-4\", \"message\":\"Air temperature datum was not found on dataset sent.\" }\r\n";
+                    self.wfile.write(bytes(str(json_return), "utf8"))
+                    
+                if 'soil_moisture' in data:
+                    read_inserts.append([epoch, id, "soil_moisture", str(data['soil_moisture']), client_ip])
+                else:
+                    json_return = "{\"code\": \"-3\", \"message\":\"Soil moisture datum was not found on dataset sent.\" }\r\n";
+                    self.wfile.write(bytes(str(json_return), "utf8"))
+                    
+                read.insert(read_inserts)
+                read.execute()
+                util.log("Saved.", "attini.py")
+                util.log("Return JSON is {0}.".format(str(json_return)), "attini.py")
+                self.wfile.write(bytes(str(json_return), "utf8"))
+            else:
+                util.log("ID not found. Error: -2", "attini.py")
+                json_return = "{\"code\": \"-2\", \"message\":\"ID datum was not found on dataset sent.\" }\r\n";
+                self.wfile.write(bytes(str(json_return), "utf8"))
+        except Exception as e:
+            util.log("Error: {0}".format(str(e)), "attini.py")
+            util.log("Error processing POST. Error: -1", "attini.py")
+            json_return = "{\"code\": \"-1\", \"message\":\"Something gone wrong when dataset was processing.\" }\r\n";
+            self.wfile.write(bytes(str(json_return), "utf8"))
 
 if __name__ == '__main__':
     args = sys.argv
