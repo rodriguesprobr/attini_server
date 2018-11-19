@@ -20,7 +20,7 @@ def execute():
             db.connect()
             cursor = db.connection.cursor()
             for t in tuples:
-                sql = "INSERT INTO readings (epoch, rpiid, type, read_value, ip) VALUES  ({0}, '{1}', '{2}', '{3}', '{4}');".format(\
+                sql = "INSERT INTO readings (epoch, id, type, read_value, ip) VALUES  ({0}, '{1}', '{2}', '{3}', '{4}');".format(\
                     t[0],\
                     t[1],\
                     t[2],\

@@ -3,12 +3,12 @@
 from attini import db
 from attini import util
 
-def execute(epoch, rpiid, photo_bin, ip):
+def execute(epoch, id, photo_bin, ip):
     try:
         db.connect()
         cursor = db.connection.cursor()
-        sql = "INSERT INTO photo (epoch, rpiid, photo_bin, ip) VALUES(%s, %s, %s, %s);"
-        args = (epoch, rpiid, photo_bin, ip)
+        sql = "INSERT INTO photo (epoch, id, photo_bin, ip) VALUES(%s, %s, %s, %s);"
+        args = (epoch, id, photo_bin, ip)
         if util.get_config("debug") == True:
             util.log(sql, "attini/photo.py", level = "debug")
             util.log(str(args), "attini/photo.py", level = "debug")
@@ -24,7 +24,7 @@ def execute(epoch, rpiid, photo_bin, ip):
             util.log("Error: {0} - {1} ".format(str(e.args[0]),str(e.args[1])), "attini/photo.py")
             return False
             
-def select_all(rpiid):
+def select_all(id):
     try:
         sql = """
             SELECT
@@ -33,7 +33,7 @@ def select_all(rpiid):
             FROM photo
             WHERE 1
         """
-        sql = sql + " AND rpiid = '{0}' ".format(rpiid)
+        sql = sql + " AND id = '{0}' ".format(id)
         sql = sql + " ORDER BY epoch ASC "
         db.connect()
         cursor = db.connection.cursor()

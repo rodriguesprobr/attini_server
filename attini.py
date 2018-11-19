@@ -135,13 +135,13 @@ if __name__ == '__main__':
         
         exps = experience.select_all()
         for exp in exps:
-            util.log("Processing the experience #{0}".format(exp["rpiid"]), "attini.py")
+            util.log("Processing the experience #{0}".format(exp["id"]), "attini.py")
             
-            exp_path = img_path + "/{0}".format(str(exp["rpiid"]))
+            exp_path = img_path + "/{0}".format(str(exp["id"]))
             if not os.path.exists(exp_path):
                 os.makedirs(exp_path)
             
-            photos = photo.select_all(exp["rpiid"])
+            photos = photo.select_all(exp["id"])
             util.log("Photos: {0}".format(str(len(photos))), "attini.py")
             
             i = 0;
@@ -159,4 +159,4 @@ if __name__ == '__main__':
                         util.log("File exists to image to {0} as {1} ".format(photo_bin["epoch"], i), "attini.py")
                     i = i + 1
             if len(photos) > 0:
-                proc = subprocess.Popen(["ffmpeg", "-r", "60", "-i", exp_path + "/%d.jpg".format(exp["rpiid"]), "-r", "60", "-y", "-vcodec", "libx264", "-q:v", "3", "{0}/{1}.mp4".format(video_path, exp["rpiid"])])
+                proc = subprocess.Popen(["ffmpeg", "-r", "60", "-i", exp_path + "/%d.jpg".format(exp["id"]), "-r", "60", "-y", "-vcodec", "libx264", "-q:v", "3", "{0}/{1}.mp4".format(video_path, exp["id"])])

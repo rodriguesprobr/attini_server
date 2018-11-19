@@ -7,10 +7,10 @@ def select_all():
     try:
         sql = """
             SELECT
-                rpiid
+                id
             FROM readings
-            GROUP BY rpiid
-            ORDER BY rpiid ASC;
+            GROUP BY id
+            ORDER BY id ASC;
         """
         db.connect()
         cursor = db.connection.cursor()
