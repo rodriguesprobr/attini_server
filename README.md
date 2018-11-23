@@ -16,7 +16,7 @@
 ### Requirements
 + MariaDB or MySQL Server 5+
 + Updated GNU/Linux distro with a seeting network connection and MariaDB/SSH access
-+ Python 3.5+
++ Python 3.6+
 + Git client
 
 ### Clean installation Recipe
