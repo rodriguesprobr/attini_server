@@ -1,6 +1,9 @@
+[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/) 
+[![CRAN/METACRAN](https://img.shields.io/cran/l/devtools.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
+
 # Attini Environment
 
-[Server (Linux x64 - Python 3.5+ - MySQL/MariaDB)](https://github.com/rodriguesprobr/attini_server "Attini Server x64") | [Client RPi3 (Linux arm - Python 3.5+)](https://github.com/rodriguesprobr/attini_client_rpi3 "Attini Client - RPi 3")
+[Server (Linux x64 - Python 3.6+ - MySQL/MariaDB)](https://github.com/rodriguesprobr/attini_server "Attini Server x64") | [Client RPi3 (Linux arm - Python 3.6+)](https://github.com/rodriguesprobr/attini_client_rpi3 "Attini Client - RPi 3")
 
 ## Server to GNU/Linux
 
@@ -13,7 +16,7 @@
 ### Requirements
 + MariaDB or MySQL Server 5+
 + Updated GNU/Linux distro with a seeting network connection and MariaDB/SSH access
-+ Python 3.5+
++ Python 3.6+
 + Git client
 
 ### Clean installation Recipe
