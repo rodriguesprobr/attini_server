@@ -63,28 +63,28 @@ class httpHandler(http.server.BaseHTTPRequestHandler):
                     if str(data['photo_bin']) != '0':
                         photo.execute(epoch, id, base64.b64decode(data['photo_bin'].encode('utf8')), client_ip)
                     else:
-                        json_return = "{\"code\": \"-7\", \"message\":\"Photo datum was not found on dataset sent.\" }\r\n";
+                        json_return = "{\"code\": \"-12\", \"message\":\"Photo datum was not found on dataset sent.\" }\r\n";
                         self.wfile.write(bytes(str(json_return), "utf8"))
                 else:
-                    json_return = "{\"code\": \"-6\", \"message\":\"Photo datum was not found on dataset sent.\" }\r\n";
+                    json_return = "{\"code\": \"-11\", \"message\":\"Photo datum was not found on dataset sent.\" }\r\n";
                     self.wfile.write(bytes(str(json_return), "utf8"))
                 
                 if 'air_humidity' in data:
                     read_inserts.append([epoch, id, "air_humidity", str(data['air_humidity']), client_ip])
                 else:
-                    json_return = "{\"code\": \"-5\", \"message\":\"Air humidity datum was not found on dataset sent.\" }\r\n";
+                    json_return = "{\"code\": \"-10\", \"message\":\"Air humidity datum was not found on dataset sent.\" }\r\n";
                     self.wfile.write(bytes(str(json_return), "utf8"))
                     
                 if 'air_temperature' in data:
                     read_inserts.append([epoch, id, "air_temperature", str(data['air_temperature']), client_ip])
                 else:
-                    json_return = "{\"code\": \"-4\", \"message\":\"Air temperature datum was not found on dataset sent.\" }\r\n";
+                    json_return = "{\"code\": \"-9\", \"message\":\"Air temperature datum was not found on dataset sent.\" }\r\n";
                     self.wfile.write(bytes(str(json_return), "utf8"))
                     
                 if 'soil_moisture' in data:
                     read_inserts.append([epoch, id, "soil_moisture", str(data['soil_moisture']), client_ip])
                 else:
-                    json_return = "{\"code\": \"-3\", \"message\":\"Soil moisture datum was not found on dataset sent.\" }\r\n";
+                    json_return = "{\"code\": \"-8\", \"message\":\"Soil moisture datum was not found on dataset sent.\" }\r\n";
                     self.wfile.write(bytes(str(json_return), "utf8"))
                     
                 read.insert(read_inserts)
@@ -93,13 +93,13 @@ class httpHandler(http.server.BaseHTTPRequestHandler):
                 util.log("Return JSON is {0}.".format(str(json_return)), "attini.py")
                 self.wfile.write(bytes(str(json_return), "utf8"))
             else:
-                util.log("ID not found. Error: -2", "attini.py")
-                json_return = "{\"code\": \"-2\", \"message\":\"ID datum was not found on dataset sent.\" }\r\n";
+                util.log("ID not found. Error: -7", "attini.py")
+                json_return = "{\"code\": \"-7\", \"message\":\"ID datum was not found on dataset sent.\" }\r\n";
                 self.wfile.write(bytes(str(json_return), "utf8"))
         except Exception as e:
             util.log("Error: {0}".format(str(e)), "attini.py")
-            util.log("Error processing POST. Error: -1", "attini.py")
-            json_return = "{\"code\": \"-1\", \"message\":\"Something gone wrong when dataset was processing.\" }\r\n";
+            util.log("Error processing POST. Error: -6", "attini.py")
+            json_return = "{\"code\": \"-6\", \"message\":\"Something gone wrong when dataset was processing.\" }\r\n";
             self.wfile.write(bytes(str(json_return), "utf8"))
 
 if __name__ == '__main__':
