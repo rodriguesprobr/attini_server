@@ -18,6 +18,7 @@
 + Updated GNU/Linux distro with a seeting network connection and MariaDB/SSH access
 + Python 3.6+
 + Git client
++ FreeMono truetype Fon (to generate the timelapse infobox)
 
 ### Clean installation Recipe
 
@@ -35,10 +36,17 @@ sudo -H pip3 install /opt/attini/server
 Also, you may be able to schedule the server at the boot using cron capabilites, as mentioned above:
 ```
 @reboot /usr/bin/python3 /opt/attini/server/attini.py start
-# To rebuild timelapse videos every ~1 day, run: 
+```
+#### To build and rebuild timelapse videos every ~1 day, run: 
+```
 * */6 * * * /usr/bin/python3 /opt/attini/server/timelapse.py create_image_buffer
 * 12 * * * /usr/bin/python3 /opt/attini/server/timelapse.py create_video_files
 ```
+
+#### FreeMono font installation
+Make sure that you have installed the FreeMono truetype font at /usr/share/fonts/truetype/freefont/FreeMono.ttf
+If you want to change the truetype font or the path, please update the attribute timelapse_font_truetype_file_path in /opt/attini/server/config.json file.
+If don't have FreeMono truetype font please visit the URL address [https://www.fontspace.com/gnu-freefont/freemono](https://www.fontspace.com/gnu-freefont/freemono)
 
 ### To do
 + Threading code
