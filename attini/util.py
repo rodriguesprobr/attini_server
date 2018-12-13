@@ -10,6 +10,29 @@ logging.basicConfig(level=logging.DEBUG)
 
 configuration_path = "/opt/attini/server/config.json"
 
+def epoch_to_datetime(epoch):
+    return str(time.strftime(get_config("timelapse_datetime_format"), time.localtime(epoch)))
+
+def get_config(attribute):
+    global configuration_path
+    return json.load(open(configuration_path, "r"))[attribute]
+    
+def get_epoch():
+    return int(time.time())
+    
+def get_md5(string):
+    md5 = hashlib.md5()
+    md5.update(string)
+    return str(md5.hexdigest())
+    
+def get_random_int(value_min, value_max):
+    random_int = random.randint(value_min, value_max)
+    log("Random int generated from {0} - {1}: {2}".format(str(value_min), str(value_max), str(random_int)), "attini/util.py", level = "debug")
+    return random_int
+    
+def get_random_record(recordsets):
+    return random.choice(recordsets)
+    
 def log(
         message = "",\
         source = "N/A",\
@@ -22,26 +45,6 @@ def log(
                 logger.debug("["+str(int(time.time()))+"] " + message)
         else:
             logger.info("["+str(int(time.time()))+"] " + message)
-
-def get_epoch():
-    return int(time.time())
-    
-def get_md5(string):
-    md5 = hashlib.md5()
-    md5.update(string)
-    return str(md5.hexdigest())
-    
-def get_config(attribute):
-    global configuration_path
-    return json.load(open(configuration_path, "r"))[attribute]
-    
-def get_random_int(value_min, value_max):
-    random_int = random.randint(value_min, value_max)
-    log("Random int generated from {0} - {1}: {2}".format(str(value_min), str(value_max), str(random_int)), "attini/util.py", level = "debug")
-    return random_int
-    
-def get_random_record(recordsets):
-    return random.choice(recordsets)
     
 def sleep(value_min = 1, value_max = 1):
     value_random = get_random_int(value_min, value_max)

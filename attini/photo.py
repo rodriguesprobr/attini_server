@@ -24,7 +24,10 @@ def execute(epoch, id, photo_bin, ip):
             util.log("Error: {0} - {1} ".format(str(e.args[0]),str(e.args[1])), "attini/photo.py")
             return False
             
-def select_all(id):
+def select_all(\
+    id,\
+    last_photo_epoch = 0\
+):
     try:
         sql = """
             SELECT
@@ -34,6 +37,8 @@ def select_all(id):
             WHERE 1
         """
         sql = sql + " AND id = '{0}' ".format(id)
+        if int(last_photo_epoch) > 0:
+            sql = sql + " AND epoch > {0} ".format(last_photo_epoch)
         sql = sql + " ORDER BY epoch ASC "
         db.connect()
         cursor = db.connection.cursor()

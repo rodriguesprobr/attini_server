@@ -53,6 +53,3 @@ setup(
     python_requires=">=2.7",
     platforms=["arm", "linux", "linux2", "darwin"]
 )
-
-
-
