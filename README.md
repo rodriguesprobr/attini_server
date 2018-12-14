@@ -18,7 +18,7 @@
 + Updated GNU/Linux distro with a seeting network connection and MariaDB/SSH access
 + Python 3.6+
 + Git client
-+ FreeMono truetype Fon (to generate the timelapse infobox)
++ FreeMono truetype font (to generate the timelapse infobox)
 
 ### Clean installation Recipe
 
