@@ -39,8 +39,8 @@ Also, you may be able to schedule the server at the boot using cron capabilites,
 ```
 #### To build and rebuild timelapse videos every ~1 day, run: 
 ```
-* */6 * * * /usr/bin/python3 /opt/attini/server/timelapse.py create_image_buffer
-* 12 * * * /usr/bin/python3 /opt/attini/server/timelapse.py create_video_files
+* */12 * * * /usr/bin/python3 /opt/attini/server/timelapse.py create_image_buffer
+* 1 * * * /usr/bin/python3 /opt/attini/server/timelapse.py create_video_files
 ```
 
 #### FreeMono font installation
