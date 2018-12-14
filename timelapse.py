@@ -31,7 +31,6 @@ if __name__ == '__main__':
                 
             photos = sorted(os.listdir(exp_path))
             last_photo_epoch = photos[-1][:-4] if len(photos) > 0 else 0
-            print(last_photo_epoch)
             
             photos = photo.select_all(\
                 id = exp["id"],\
